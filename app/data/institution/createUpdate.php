@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/institutionPdo.php';
-include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/view/root/indexView.php';
+include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
 
 $flag=false;
 $json['suscess']='false';
@@ -14,7 +14,7 @@ $json['error']= alertAddFail();
 if (isset($_POST['name']) && isset($_POST['code'])){
     $array['name']=$_POST['name'];
     $array['code']=$_POST['code'];
-    if (isset($_POST['id'])){
+    if (isset($_POST['id']) && $_POST['id']!=''){
         $array['id']=$_POST['id'];
         $flag = updateInstitution($array);
     }else{

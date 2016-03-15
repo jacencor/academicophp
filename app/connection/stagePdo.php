@@ -50,14 +50,20 @@ function addStage($input){
     $input['state']="ACTIVO";
     $input['created_at']=date("Y-m-d H:i:s");
     $input['updated_at']=date("Y-m-d H:i:s");
-    //$getId = new connectionDb;
-    //$result = $connection->executeSQL('SELECT id as id FROM institutions WHERE state in (:state)',$input['state']='ACTIVO');
-    //$input['institutions_id']=$result['output']['id'];
+    /*
+     * Obtener el ID del registro de la tabla Insitituions ACTIVO
+     * 
+     */
+    $getId = new connectionDb;
+    $state['state']="ACTIVO";
+    $sql='SELECT id as id FROM institutions WHERE state = :state';
+    $id = $getId->executeSelect($sql,$state);
+    $input['institutions_id']=$id['output']['id'];
     $sql = 'INSERT 
-                INTO stages (name, state, created_at, updated_at)
-                VALUES (:name, :state, :created_at, :updated_at,)';
+                INTO stages (name, state, created_at, updated_at,institutions_id)
+                VALUES (:name, :state, :created_at, :updated_at, :institutions_id)';
     $connection = new connectionDb;
-    $output = $connection->executeSelect($sql,$input);
+    $output = $connection->executeSQL($sql,$input);
     if($output['flag']){
         return true;
     }else{

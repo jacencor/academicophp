@@ -9,12 +9,6 @@ class connectionDb {
     private $user = 'root';
     private $password = '';
 
-       
-    public function log($data){
-        ini_set("log_errors", 1);
-        ini_set("error_log",$_SERVER["DOCUMENT_ROOT"].'/academicophp/error.log');
-        error_log( $data );
-    }
     /*
      * ABRIR CONEXION
      * ---------------------------------------
@@ -34,11 +28,11 @@ class connectionDb {
             return ($output);
         } catch (PDOException $e) {
             //$output['messages'] = 'Fallo la conexion: ' . $e->getMessage();
-            log($e);
+            error_log($e->getMessage(),0);
             return ($output);
         }catch (Exception $e){
             //$output['messages'] = 'Fallo la conexion: ' . $e->getMessage();
-            log($e);
+            error_log($e->getMessage(),0);
             return ($output);
         }
     }
@@ -65,11 +59,11 @@ class connectionDb {
                 return ($output);
         } catch (PDOException $e) {
                 //$output['messages'] = 'Fallo la conexion: ' . $e->getMessage();
-                log($e);
+                error_log($e->getMessage(),0);
                 return ($output);
         }catch (Exception $e){
                 //$output['messages'] = 'Fallo la conexion: ' . $e->getMessage();
-                log($e);
+                error_log($e->getMessage(),0);
                 return ($output);
         } 
     }
@@ -97,11 +91,11 @@ class connectionDb {
                 return ($output);
         } catch (PDOException $e) {
                 //$output['messages'] = 'Fallo la conexion: ' . $e->getMessage();
-                log($e);
+                error_log($e->getMessage(),0);
                 return ($output);
         }catch (Exception $e){
                 //$output['messages'] = 'Fallo la conexion: ' . $e->getMessage();
-                log($e);
+                error_log($e->getMessage(),0);
                 return ($output);
         } 
     }
@@ -117,7 +111,7 @@ class connectionDb {
      */
     public function executeSQL($sql,$input){
         $output['flag']=false;
-       // try {
+       try {
                 $dsn =  $this->serverDb.':dbname='.$this->dataBase.';host='.$this->host.';port='.$this->port;                  
                 $open = new PDO($dsn, $this->user, $this->password);
                 $open->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -127,14 +121,14 @@ class connectionDb {
                 $output['flag']=true;
                 $open = null;
                 return ($output);
-        //} catch (PDOException $e) {
+        } catch (PDOException $e) {
                 //$output['messages'] = 'Fallo la conexion: ' . $e->getMessage();
-                log($e);
+                error_log($e->getMessage(),0);
                 return ($output);
-        //}catch (Exception $e){
+        }catch (Exception $e){
                 //$output['messages'] = 'Fallo la conexion: ' . $e->getMessage();
-                log($e);
+                error_log($e->getMessage(),0);
                 return ($output);
-        //} 
+        } 
     }
 }

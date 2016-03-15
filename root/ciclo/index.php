@@ -19,6 +19,7 @@
                     data: $("form").serialize(),
                     dataType: 'json',
                     success: function(msg){ 
+                        console.log(msg.suscess);
                         if (msg.suscess == 'true'){
                             $("#modalForm").modal('hide');
                         }else{
@@ -27,7 +28,7 @@
                     error: function(msg){
                         $("#messages1").append(msg.error);
                     },
-                    complete: function ( ) {
+                    complete: function () {
                         $('#modalWait').modal('hide');
                     }
                 });

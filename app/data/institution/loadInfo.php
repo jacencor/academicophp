@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/institutionPdo.php';
-include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/view/root/indexView.php';
+include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
 
 $json['suscess']='false';
 $json['error']= alertReadFail();

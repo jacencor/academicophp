@@ -13,7 +13,7 @@ $json['suscess']='false';
 $json['error']= alertAddFail();
 if (isset($_POST['name'])){
     $array['name']=$_POST['name'];
-    if (isset($_POST['id'])){
+    if (isset($_POST['id']) && $_POST['id']!='' ){
         $array['id']=$_POST['id'];
         $flag = updateStage($array);
     }else{
@@ -24,4 +24,5 @@ if($flag){
         $json['suscess']='true';
         $json['error']='';
 }
+error_log(print_r($json),0);
 echo json_encode($json);	
