@@ -16,6 +16,7 @@ if (isset($_POST['name']) && isset($_POST['code'])){
     $array['code']=$_POST['code'];
     if (isset($_POST['id']) && $_POST['id']!=''){
         $array['id']=$_POST['id'];
+        error_log('id: '.$_POST['id'],0);
         $flag = updateInstitution($array);
     }else{
         $flag = addInstitution($array);

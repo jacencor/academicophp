@@ -13,23 +13,22 @@
 
             $("#submit").click(function(){
                 $('#modalWait').modal('show');
-                console.log("as");
                 $.ajax({
                     type: "POST",
                     url: "../../app/data/institution/createUpdate.php",
                     data: $("form").serialize(),
                     dataType: 'json',
                     success: function(msg){ 
-                        alert ("2432");
-                        $('#modalWait').modal('hide');
                         if (msg.suscess == 'true'){
                             $("#modalForm").modal('hide');
                         }else{
                             $("#messages1").append(msg.error);
                         }},
                     error: function(msg){
-                        $('#modalWait').modal('hide');
                         $("#messages1").append(msg.error);
+                    },
+                    complete: function () {
+                        $('#modalWait').modal('hide');
                     }
                 });
             });
@@ -57,7 +56,6 @@
             });
             
             $(".edit").click(function(){
-                
                 $.ajax({
                     type: "POST",
                     url: "../../app/data/institution/loadInfo.php",
