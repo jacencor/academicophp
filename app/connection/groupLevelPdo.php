@@ -56,7 +56,8 @@ function addGroupLevel($input){
     if (!preg_match("/^[0-9]+$/",$input['levels_id'])){
         return false;
     }
-    $input['name']=trim($input['name']);
+    $foo = preg_replace('/\s+/', ' ', $foo);
+    $input['name']=strtoupper(preg_replace('/\s+/', ' ', trim($input['name'])));
     $input['state']="ACTIVO";
     $input['created_at']=date("Y-m-d H:i:s");
     $input['updated_at']=date("Y-m-d H:i:s");
@@ -85,7 +86,7 @@ function updateGroupLevel($input){
     if (!preg_match("/^[0-9]+$/",$input['id'])){
         return false;
     }
-    $input['name']=trim($input['name']);
+    $input['name']=strtoupper(preg_replace('/\s+/', ' ', trim($input['name'])));
     $input['updated_at']=date("Y-m-d H:i:s");
     $sql = 'UPDATE group_levels
                 SET name=:name, quota=:quota, updated_at=:updated_at, levels_id=:levels_id

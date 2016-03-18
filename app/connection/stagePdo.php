@@ -51,7 +51,7 @@ function addStage($input){
     if (!preg_match("/^[0-9]+$/",$input['institutions_id'])){
         return false;
     }
-    $input['name']=trim($input['name']);
+    $input['name']=strtoupper(preg_replace('/\s+/', ' ', trim($input['name'])));
     $input['state']="ACTIVO";
     $input['created_at']=date("Y-m-d H:i:s");
     $input['updated_at']=date("Y-m-d H:i:s");
@@ -77,7 +77,7 @@ function updateStage($input){
     if (!preg_match("/^[0-9]+$/",$input['id'])){
         return false;
     }
-    $input['name']=trim($input['name']);
+    $input['name']=strtoupper(preg_replace('/\s+/', ' ', trim($input['name'])));
     $input['updated_at']=date("Y-m-d H:i:s");
     $sql = 'UPDATE stages
                 SET name=:name, institutions_id=:institutions_id, updated_at=:updated_at

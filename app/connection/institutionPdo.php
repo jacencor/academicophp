@@ -60,7 +60,7 @@ function addInstitution($input){
     if (!preg_match("/^[a-zA-Z0-9]{3,}+$/",$input['code'])){
         return false;
     }
-    $input['name']=trim($input['name']);
+    $input['name']=strtoupper(preg_replace('/\s+/', ' ', trim($input['name'])));
     $input['code']=trim($input['code']);
     $input['state']="ACTIVO";
     $input['created_at']=date("Y-m-d H:i:s");
@@ -126,7 +126,7 @@ function updateInstitution($input){
     if (!preg_match("/^[0-9]+$/",$input['id'])){
         return false;
     }
-    $input['name']=trim($input['name']);
+    $input['name']=strtoupper(preg_replace('/\s+/', ' ', trim($input['name'])));
     $input['code']=trim($input['code']);
     $input['updated_at']=date("Y-m-d H:i:s");
     $sql = 'UPDATE institutions

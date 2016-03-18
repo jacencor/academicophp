@@ -51,7 +51,7 @@ function addLevel($input){
     if (!preg_match("/^[0-9]+$/",$input['stages_id'])){
         return false;
     }
-    $input['name']=trim($input['name']);
+    $input['name']=strtoupper(preg_replace('/\s+/', ' ', trim($input['name'])));
     $input['state']="ACTIVO";
     $input['created_at']=date("Y-m-d H:i:s");
     $input['updated_at']=date("Y-m-d H:i:s");
@@ -77,7 +77,7 @@ function updateLevel($input){
     if (!preg_match("/^[0-9]+$/",$input['id'])){
         return false;
     }
-    $input['name']=trim($input['name']);
+    $input['name']=strtoupper(preg_replace('/\s+/', ' ', trim($input['name'])));
     $input['updated_at']=date("Y-m-d H:i:s");
     $sql = 'UPDATE levels
                 SET name=:name, updated_at=:updated_at, stages_id=:stages_id
