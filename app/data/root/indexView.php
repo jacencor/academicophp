@@ -42,6 +42,7 @@ function printNav(){
                                     <li><a href="http://localhost/academicophp/root/institucion/">Institución</a></li>
                                     <li><a href="http://localhost/academicophp/root/ciclo/">Ciclo</a></li>
                                     <li><a href="http://localhost/academicophp/root/nivel/">Nivel</a></li>
+                                    <li><a href="http://localhost/academicophp/root/paralelo/">Paralelo</a></li>
                                 </ul>
                             </li>
                         </ul>

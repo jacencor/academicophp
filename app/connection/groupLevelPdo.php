@@ -7,48 +7,53 @@
  */
 require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/connection.php';
 
-function listStages(){
+function listGroupLevels(){
     $sql = 'SELECT 
-                stages.id AS id
-                ,stages.name AS name
-                ,stages.state AS state
-                ,stages.created_at AS created_at
-                ,stages.updated_at AS updated_at
-                ,institutions.name AS institution
-                ,institutions.id AS institutions_id
-            FROM Stages
-            INNER JOIN institutions
-            ON stages.institutions_id=institutions.id 
-            ORDER BY name';
+                group_levels.id AS id
+                ,group_levels.name AS name
+                ,group_levels.state AS state
+                ,group_levels.quota AS quota
+                ,group_levels.created_at AS created_at
+                ,group_levels.updated_at AS updated_at
+                ,levels.name AS level
+                ,levels.id AS levels_id
+            FROM group_levels
+            INNER JOIN levels
+            ON group_levels.levels_id=levels.id 
+            ORDER BY level, name';
     $connection = new connectionDb;
     $output = $connection->executeSelectArray($sql);
     return ($output);
 }
 
-function listStagesActive(){
+function listGroupLevelsActive(){
     $sql = "SELECT 
-                stages.id AS id
-                ,stages.name AS name
-                ,stages.state AS state
-                ,stages.created_at AS created_at
-                ,stages.updated_at AS updated_at
-                ,institutions.name AS institution
-                ,institutions.id AS institutions_id
-            FROM Stages
-            INNER JOIN institutions
-            ON stages.institutions_id=institutions.id 
-            WHERE stages.state = 'ACTIVO'
-            ORDER BY name";
+                group_levels.id AS id
+                ,group_levels.name AS name
+                ,group_levels.state AS state
+                ,group_levels.quota AS quota
+                ,group_levels.created_at AS created_at
+                ,group_levels.updated_at AS updated_at
+                ,levels.name AS level
+                ,levels.id AS levels_id
+            FROM group_levels
+            INNER JOIN levels
+            ON group_levels.levels_id=levels.id 
+            WHERE group_levels.state = 'ACTIVO'
+            ORDER BY level, name";
     $connection = new connectionDb;
     $output = $connection->executeSelectArray($sql);
     return ($output);
 }
 
-function addStage($input){
+function addGroupLevel($input){
     if (!preg_match("/^[a-zA-Z0-9\s]{3,}+$/",$input['name'])){
         return false;
     }
-    if (!preg_match("/^[0-9]+$/",$input['institutions_id'])){
+    if (!preg_match("/^[0-9]+$/",$input['quota'])){
+        return false;
+    }
+    if (!preg_match("/^[0-9]+$/",$input['levels_id'])){
         return false;
     }
     $input['name']=trim($input['name']);
@@ -56,8 +61,8 @@ function addStage($input){
     $input['created_at']=date("Y-m-d H:i:s");
     $input['updated_at']=date("Y-m-d H:i:s");
     $sql = 'INSERT 
-                INTO stages (name, state, created_at, updated_at,institutions_id)
-                VALUES (:name, :state, :created_at, :updated_at, :institutions_id)';
+                INTO group_levels (name, quota, state, created_at, updated_at, levels_id)
+                VALUES (:name, :quota, :state, :created_at, :updated_at, :levels_id)';
     $connection = new connectionDb;
     $output = $connection->executeSQL($sql,$input);
     if($output['flag']){
@@ -67,11 +72,14 @@ function addStage($input){
     }
 }
 
-function updateStage($input){
+function updateGroupLevel($input){
     if (!preg_match("/^[a-zA-Z0-9\s]{3,}+$/",$input['name'])){
         return false;
     }
-    if (!preg_match("/^[0-9]+$/",$input['institutions_id'])){
+    if (!preg_match("/^[0-9]+$/",$input['quota'])){
+        return false;
+    }
+    if (!preg_match("/^[0-9]+$/",$input['levels_id'])){
         return false;
     }
     if (!preg_match("/^[0-9]+$/",$input['id'])){
@@ -79,8 +87,8 @@ function updateStage($input){
     }
     $input['name']=trim($input['name']);
     $input['updated_at']=date("Y-m-d H:i:s");
-    $sql = 'UPDATE stages
-                SET name=:name, institutions_id=:institutions_id, updated_at=:updated_at
+    $sql = 'UPDATE group_levels
+                SET name=:name, quota=:quota, updated_at=:updated_at, levels_id=:levels_id
                 WHERE id IN (:id)';
     $connection = new connectionDb;
     $output = $connection->executeSQL($sql,$input);
@@ -91,13 +99,13 @@ function updateStage($input){
     }
 }
 
-function inactiveStage($id){
+function inactiveGroupLevel($id){
     if (!preg_match("/^[0-9]+$/",$id['id'])){
         return false;
     }
     $id['state']='INACTIVO';
     $id['updated_at']=date("Y-m-d H:i:s");
-    $sql = 'UPDATE stages
+    $sql = 'UPDATE group_levels
                 SET state=:state, updated_at=:updated_at
                 WHERE id IN (:id)';
     $connection = new connectionDb;
@@ -109,21 +117,7 @@ function inactiveStage($id){
     }
 }
 
-function deleteStage($id){
-    if (!preg_match("/^[0-9]+$/",$id['id'])){
-        return false;
-    }
-    $sql = 'DELETE FROM stages WHERE id IN (:id)';
-    $connection = new connectionDb;
-    $output = $connection->executeSQL($sql,$id);
-    if($output['flag']){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-function findStage($id){
+function findGroupLevel($id){
     $output['flag']=false;
     if (!preg_match("/^[0-9]+$/",$id['id'])){
         return $output;
@@ -131,11 +125,12 @@ function findStage($id){
     $sql = "SELECT 
                 id AS id
                 ,name AS name
+                ,quota AS quota
                 ,state AS state
                 ,created_at AS created_at
                 ,updated_at AS updated_at
-                ,institutions_id as institutions_id
-            FROM stages
+                ,levels_id as levels_id
+            FROM group_levels
             WHERE id in (:id)
             AND state = 'ACTIVO'
             ORDER BY name";

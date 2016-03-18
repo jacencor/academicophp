@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php 
-    require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
-    require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/stage/stageView.php';
+    require_once ($_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php');
+    require_once ($_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/groupLevel/groupLevelView.php'); 
 ?>
 <html lang="es">
     <?php printHead('../../'); ?>
@@ -15,7 +15,7 @@
                 $('#modalWait').modal('show');
                 $.ajax({
                     type: "POST",
-                    url: "../../app/data/stage/createUpdate.php",
+                    url: "../../app/data/groupLevel/createUpdate.php",
                     data: $("form").serialize(),
                     dataType: 'json',
                     success: function(msg){ 
@@ -37,7 +37,7 @@
                 $('#modalWait').modal('show').delay(5000);
                 $.ajax({
                     type: "POST",
-                    url: "../../app/data/stage/delete.php",
+                    url: "../../app/data/groupLevel/delete.php",
                     data: {id:$(this).attr('value')},
                     dataType: 'json',
                     success: function(msg){
@@ -58,15 +58,16 @@
             $(".edit").click(function(){
                 $.ajax({
                     type: "POST",
-                    url: "../../app/data/stage/loadInfo.php",
+                    url: "../../app/data/groupLevel/loadInfo.php",
                     data: {id:$(this).attr('value')},
                     dataType: 'json',
                     success: function(msg){ 
                         if (msg.suscess == 'true'){
                             $("#modalForm").modal();
                             $("#name").val(msg.name);
-                            $("#institutions").val(msg.institutions_id);
-                            $("#code").val(msg.code);
+                            $("#quota").val(msg.quota);
+                            $("#levels").val(msg.levels_id);
+                            $("#stages").val(msg.stages_id);
                             $("#id").val(msg.id);
                             //location.reload();
                         }else{
@@ -91,14 +92,14 @@
             <div  class="container">
                 <div  class="page-header">
                     <div>
-                        <h1>Ciclos
-                            <button id="openModal" type="button" class="btn  btn-primary pull-right ">Agregar ciclo</button>
+                        <h1>Paralelos
+                            <button id="openModal" type="button" class="btn  btn-primary pull-right ">Agregar paralelo</button>
                         </h1>
                         <div id="messages2"></div>
                     </div>
                 </div>
                 <div class="row">
-                    <?php printListStagesActive(); ?>
+                    <?php printListGroupLevelsActive(); ?>
                 </div>
             </div>
         </div>
@@ -108,18 +109,22 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Crear Ciclo</h4>
+                        <h4 class="modal-title">Crear Paralelo</h4>
                     </div>
                     <div class="modal-body">
                         <form  id="form" role="form">
                             <div class="form-group">
-                                <label for="name">Ciclo:</label>
+                                <label for="name">Paralelo:</label>
                                 <input type="text" class="form-control" name="name" id="name">
                             </div>
-                             <div class="form-group">
-                                <label for="stages">Institucion:</label>
-                                <?php printSelectInstitutionActive(); ?>
-                            </div>  
+                            <div class="form-group">
+                                <label for="name">Cupo:</label>
+                                <input type="integer" class="form-control" name="quota" id="quota">
+                            </div>
+                            <div class="form-group">
+                                <label for="levels">Nivel:</label>
+                                <?php printSelectLevelsActive(); ?>
+                            </div>         
                             <input type="hidden" name="id" id="id" value="">
                             <div id="messages1"></div>
 			</form>

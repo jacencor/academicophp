@@ -5,20 +5,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/stagePdo.php';
+require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/groupLevelPdo.php';
 require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
 
 $flag=false;
 $json['suscess']='false';
 $json['error']= alertAddFail();
-if (isset($_POST['name']) && isset($_POST['institutions_id'])){
+if (isset($_POST['name']) && isset($_POST['levels_id'])&& isset($_POST['quota'])){
     $array['name']=$_POST['name'];
-    $array['institutions_id']=$_POST['institutions_id'];
+    $array['levels_id']=$_POST['levels_id'];
+     $array['quota']=$_POST['quota'];
     if (isset($_POST['id']) && $_POST['id']!='' ){
         $array['id']=$_POST['id'];
-        $flag = updateStage($array);
+        $flag = updateGroupLevel($array);
     }else{
-        $flag = addStage($array);
+        $flag = addGroupLevel($array);
     }
 }
 if($flag){

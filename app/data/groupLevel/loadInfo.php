@@ -5,23 +5,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/stagePdo.php';
+require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/groupLevelPdo.php';
 require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
 
 $json['suscess']='false';
 $json['error']= alertReadFail();
 if (isset($_POST['id'])){
     $array['id']=$_POST['id'];
-    $output=findStage($array);
+    $output=  findGroupLevel($array);
     if($output['flag']){
         $json['suscess']='true';
         $json['error']='';
         $json['name']=$output['output']['name'];
         $json['id']=$output['output']['id'];
+        $json['quota']=$output['output']['quota'];
         $json['state']=$output['output']['state'];
         $json['created_at']=$output['output']['created_at'];
         $json['updated_at']=$output['output']['updated_at'];
-        $json['institutions_id']=$output['output']['institutions_id'];
+        $json['levels_id']=$output['output']['levels_id'];
     }
 }
 echo json_encode($json);

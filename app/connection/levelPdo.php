@@ -18,7 +18,7 @@ function listLevels(){
                 ,stages.id AS stages_id
             FROM levels
             INNER JOIN stages
-            ON levels.stages_d=stages.id 
+            ON levels.stages_id=stages.id 
             ORDER BY name';
     $connection = new connectionDb;
     $output = $connection->executeSelectArray($sql);
@@ -60,7 +60,6 @@ function addLevel($input){
                 VALUES (:name, :state, :created_at, :updated_at, :stages_id)';
     $connection = new connectionDb;
     $output = $connection->executeSQL($sql,$input);
-    error_log($output['flag'], 0);
     if($output['flag']){
         return true;
     }else{
