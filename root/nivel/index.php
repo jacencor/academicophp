@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php 
-    require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
-    require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/institution/institutionView.php';
+    require_once ($_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php');
+    require_once ($_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/level/levelView.php'); 
 ?>
 <html lang="es">
     <?php printHead('../../'); ?>
@@ -15,7 +15,7 @@
                 $('#modalWait').modal('show');
                 $.ajax({
                     type: "POST",
-                    url: "../../app/data/institution/createUpdate.php",
+                    url: "../../app/data/level/createUpdate.php",
                     data: $("form").serialize(),
                     dataType: 'json',
                     success: function(msg){ 
@@ -37,7 +37,7 @@
                 $('#modalWait').modal('show').delay(5000);
                 $.ajax({
                     type: "POST",
-                    url: "../../app/data/institution/delete.php",
+                    url: "../../app/data/level/delete.php",
                     data: {id:$(this).attr('value')},
                     dataType: 'json',
                     success: function(msg){
@@ -58,14 +58,14 @@
             $(".edit").click(function(){
                 $.ajax({
                     type: "POST",
-                    url: "../../app/data/institution/loadInfo.php",
+                    url: "../../app/data/level/loadInfo.php",
                     data: {id:$(this).attr('value')},
                     dataType: 'json',
                     success: function(msg){ 
                         if (msg.suscess == 'true'){
                             $("#modalForm").modal();
                             $("#name").val(msg.name);
-                            $("#code").val(msg.code);
+                            $("#stages").val(msg.stages_id);
                             $("#id").val(msg.id);
                             //location.reload();
                         }else{
@@ -90,19 +90,14 @@
             <div  class="container">
                 <div  class="page-header">
                     <div>
-                        <h1>Institución
-                            <?php
-                                $count = countInstitutionsActive();
-                                if ($count['output']['total']==0){
-                                    echo '<button id="openModal" type="button" class="btn  btn-primary pull-right ">Agregar institución</button>';
-                                }
-                            ?>
+                        <h1>Niveles
+                            <button id="openModal" type="button" class="btn  btn-primary pull-right ">Agregar nivel</button>
                         </h1>
                         <div id="messages2"></div>
                     </div>
                 </div>
                 <div class="row">
-                    <?php printListInstitutionsActive(); ?>
+                    <?php printListLevelsActive(); ?>
                 </div>
             </div>
         </div>
@@ -112,18 +107,18 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Crear Institucion</h4>
+                        <h4 class="modal-title">Crear Ciclo</h4>
                     </div>
                     <div class="modal-body">
                         <form  id="form" role="form">
                             <div class="form-group">
-                                <label for="name">Nombre de institucion:</label>
+                                <label for="name">Nivel:</label>
                                 <input type="text" class="form-control" name="name" id="name">
                             </div>
                             <div class="form-group">
-                                <label for="code">Codigo:</label>
-                                <input type="text" class="form-control" name="code" id="code">
-                            </div>
+                                <label for="stages">Ciclo:</label>
+                                <?php   printSelectStagesActive(); ?>
+                            </div>         
                             <input type="hidden" name="id" id="id" value="">
                             <div id="messages1"></div>
 			</form>

@@ -7,65 +7,60 @@
  */
 require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/connection.php';
 
-function listStages(){
+function listLevels(){
     $sql = 'SELECT 
-                stages.id AS id
-                ,stages.name AS name
-                ,stages.state AS state
-                ,stages.created_at AS created_at
-                ,stages.updated_at AS updated_at
-                ,institutions.name AS institution
-                ,institutions.id AS institution_id
-            FROM Stages
-            INNER JOIN institutions
-            ON stages.institutions_id=institutions.id 
+                levels.id AS id
+                ,levels.name AS name
+                ,levels.state AS state
+                ,levels.created_at AS created_at
+                ,levels.updated_at AS updated_at
+                ,stages.name AS stage
+                ,stages.id AS stages_id
+            FROM levels
+            INNER JOIN stages
+            ON levels.stages_d=stages.id 
             ORDER BY name';
     $connection = new connectionDb;
     $output = $connection->executeSelectArray($sql);
     return ($output);
 }
 
-function listStagesActive(){
+function listLevelsActive(){
     $sql = "SELECT 
-                stages.id AS id
-                ,stages.name AS name
-                ,stages.state AS state
-                ,stages.created_at AS created_at
-                ,stages.updated_at AS updated_at
-                ,institutions.name AS institution
-                ,institutions.id AS institution_id
-            FROM Stages
-            INNER JOIN institutions
-            ON stages.institutions_id=institutions.id 
-            WHERE stages.state = 'ACTIVO'
-            ORDER BY name";
+                levels.id AS id
+                ,levels.name AS name
+                ,levels.state AS state
+                ,levels.created_at AS created_at
+                ,levels.updated_at AS updated_at
+                ,stages.name AS stage
+                ,stages.id AS stages_id
+            FROM levels
+            INNER JOIN stages
+            ON levels.stages_id=stages.id 
+            WHERE levels.state = 'ACTIVO'
+            ORDER BY stage,name";
     $connection = new connectionDb;
     $output = $connection->executeSelectArray($sql);
     return ($output);
 }
 
-function addStage($input){
+function addLevel($input){
     if (!preg_match("/^[a-zA-Z0-9\s]{3,}+$/",$input['name'])){
+        return false;
+    }
+    if (!preg_match("/^[0-9]+$/",$input['stages_id'])){
         return false;
     }
     $input['name']=trim($input['name']);
     $input['state']="ACTIVO";
     $input['created_at']=date("Y-m-d H:i:s");
     $input['updated_at']=date("Y-m-d H:i:s");
-    /*
-     * Obtener el ID del registro de la tabla Insitituions ACTIVO
-     
-     */
-    $getId = new connectionDb;
-    $state['state']="ACTIVO";
-    $sql='SELECT id as id FROM institutions WHERE state = :state';
-    $id = $getId->executeSelect($sql,$state);
-    $input['institutions_id']=$id['output']['id'];
     $sql = 'INSERT 
-                INTO stages (name, state, created_at, updated_at,institutions_id)
-                VALUES (:name, :state, :created_at, :updated_at, :institutions_id)';
+                INTO levels (name, state, created_at, updated_at,stages_id)
+                VALUES (:name, :state, :created_at, :updated_at, :stages_id)';
     $connection = new connectionDb;
     $output = $connection->executeSQL($sql,$input);
+    error_log($output['flag'], 0);
     if($output['flag']){
         return true;
     }else{
@@ -73,8 +68,11 @@ function addStage($input){
     }
 }
 
-function updateStage($input){
+function updateLevel($input){
     if (!preg_match("/^[a-zA-Z0-9\s]{3,}+$/",$input['name'])){
+        return false;
+    }
+    if (!preg_match("/^[0-9]+$/",$input['stages_id'])){
         return false;
     }
     if (!preg_match("/^[0-9]+$/",$input['id'])){
@@ -82,8 +80,8 @@ function updateStage($input){
     }
     $input['name']=trim($input['name']);
     $input['updated_at']=date("Y-m-d H:i:s");
-    $sql = 'UPDATE stages
-                SET name=:name, updated_at=:updated_at
+    $sql = 'UPDATE levels
+                SET name=:name, updated_at=:updated_at, stages_id=:stages_id
                 WHERE id IN (:id)';
     $connection = new connectionDb;
     $output = $connection->executeSQL($sql,$input);
@@ -94,13 +92,13 @@ function updateStage($input){
     }
 }
 
-function inactiveInstitution($id){
+function inactiveLevel($id){
     if (!preg_match("/^[0-9]+$/",$id['id'])){
         return false;
     }
     $id['state']='INACTIVO';
     $id['updated_at']=date("Y-m-d H:i:s");
-    $sql = 'UPDATE stages
+    $sql = 'UPDATE levels
                 SET state=:state, updated_at=:updated_at
                 WHERE id IN (:id)';
     $connection = new connectionDb;
@@ -112,21 +110,7 @@ function inactiveInstitution($id){
     }
 }
 
-function deleteInstitution($id){
-    if (!preg_match("/^[0-9]+$/",$id['id'])){
-        return false;
-    }
-    $sql = 'DELETE FROM stages WHERE id IN (:id)';
-    $connection = new connectionDb;
-    $output = $connection->executeSQL($sql,$id);
-    if($output['flag']){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-function findStage($id){
+function findLevel($id){
     $output['flag']=false;
     if (!preg_match("/^[0-9]+$/",$id['id'])){
         return $output;
@@ -137,8 +121,8 @@ function findStage($id){
                 ,state AS state
                 ,created_at AS created_at
                 ,updated_at AS updated_at
-                ,institutions_id as institutions_id
-            FROM stages
+                ,stages_id as stages_id
+            FROM levels
             WHERE id in (:id)
             AND state = 'ACTIVO'
             ORDER BY name";

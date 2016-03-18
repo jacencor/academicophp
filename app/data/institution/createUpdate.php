@@ -5,8 +5,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/institutionPdo.php';
-include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
+require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/institutionPdo.php';
+require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
 
 $flag=false;
 $json['suscess']='false';
@@ -16,7 +16,6 @@ if (isset($_POST['name']) && isset($_POST['code'])){
     $array['code']=$_POST['code'];
     if (isset($_POST['id']) && $_POST['id']!=''){
         $array['id']=$_POST['id'];
-        error_log('id: '.$_POST['id'],0);
         $flag = updateInstitution($array);
     }else{
         $flag = addInstitution($array);

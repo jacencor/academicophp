@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php 
-    include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
-    include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/stage/stageView.php';
+    require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
+    require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/stage/stageView.php';
 ?>
 <html lang="es">
     <?php printHead('../../'); ?>
@@ -19,7 +19,6 @@
                     data: $("form").serialize(),
                     dataType: 'json',
                     success: function(msg){ 
-                        console.log(msg.suscess);
                         if (msg.suscess == 'true'){
                             $("#modalForm").modal('hide');
                         }else{
@@ -57,7 +56,6 @@
             });
             
             $(".edit").click(function(){
-                
                 $.ajax({
                     type: "POST",
                     url: "../../app/data/stage/loadInfo.php",
@@ -92,7 +90,7 @@
             <div  class="container">
                 <div  class="page-header">
                     <div>
-                        <h1>Institución
+                        <h1>Ciclos
                             <button id="openModal" type="button" class="btn  btn-primary pull-right ">Agregar ciclo</button>
                         </h1>
                         <div id="messages2"></div>
@@ -109,12 +107,12 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Crear Institucion</h4>
+                        <h4 class="modal-title">Crear Ciclo</h4>
                     </div>
                     <div class="modal-body">
                         <form  id="form" role="form">
                             <div class="form-group">
-                                <label for="name">Nombre de institucion:</label>
+                                <label for="name">Ciclo:</label>
                                 <input type="text" class="form-control" name="name" id="name">
                             </div>
                             <input type="hidden" name="id" id="id" value="">

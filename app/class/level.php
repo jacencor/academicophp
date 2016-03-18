@@ -7,18 +7,18 @@
  */
 class stage   {
     private $id;
-    private $institutions_id;
+    private $stages_id;
     private $name;
-    private $institution;
+    private $stage;
     private $state;
     private $created_at;
     private $updated_at;
     
     function __construct($array) {
         $this->id=$array['id'];
-        $this->institutions_id=$array['institution_id'];
+        $this->stages_id=$array['stages_id'];
+        $this->stage=$array['stage'];
         $this->name=$array['name'];
-        $this->institution=$array['institution'];
         $this->state=$array['state'];
         $this->created_at=$array['created_at'];
         $this->updated_at=$array['updated_at'];
@@ -44,19 +44,20 @@ class stage   {
         return $this->updated_at;
     }
     
-    function getInstitutions_id() {
-        return $this->institutions_id;
-    }
-    function getInstitution() {
-        return $this->institution;
+    function getStages_id() {
+        return $this->stages_id;
     }
 
-    function setInstitution($institution) {
-        $this->institution = $institution;
+    function getStage() {
+        return $this->stage;
     }
 
-        function setInstitutions_id($institutions_id) {
-        $this->institutions_id = $institutions_id;
+    function setStages_id($stages_id) {
+        $this->stages_id = $stages_id;
+    }
+
+    function setStage($stage) {
+        $this->stage = $stage;
     }
 
     function setId($id) {

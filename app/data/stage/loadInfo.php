@@ -8,20 +8,19 @@
 require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/stagePdo.php';
 require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/data/root/indexView.php';
 
-$flag=false;
 $json['suscess']='false';
-$json['error']= alertAddFail();
-if (isset($_POST['name'])){
-    $array['name']=$_POST['name'];
-    if (isset($_POST['id']) && $_POST['id']!='' ){
-        $array['id']=$_POST['id'];
-        $flag = updateStage($array);
-    }else{
-        $flag = addStage($array);
-    }
-}
-if($flag){
+$json['error']= alertReadFail();
+if (isset($_POST['id'])){
+    $array['id']=$_POST['id'];
+    $output=findStage($array);
+    if($output['flag']){
         $json['suscess']='true';
         $json['error']='';
+        $json['name']=$output['output']['name'];
+        $json['id']=$output['output']['id'];
+        $json['state']=$output['output']['state'];
+        $json['created_at']=$output['output']['created_at'];
+        $json['updated_at']=$output['output']['updated_at'];
+    }
 }
-echo json_encode($json);	
+echo json_encode($json);

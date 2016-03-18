@@ -5,8 +5,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/institutionPdo.php';
-include_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/class/institution.php';
+require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/connection/institutionPdo.php';
+require_once $_SERVER["DOCUMENT_ROOT"].'/academicophp/app/class/institution.php';
 
 function printListInstitutionsActive(){
     $array = listInstitutionsActive();
