@@ -56,7 +56,6 @@ function addGroupLevel($input){
     if (!preg_match("/^[0-9]+$/",$input['levels_id'])){
         return false;
     }
-    $foo = preg_replace('/\s+/', ' ', $foo);
     $input['name']=strtoupper(preg_replace('/\s+/', ' ', trim($input['name'])));
     $input['state']="ACTIVO";
     $input['created_at']=date("Y-m-d H:i:s");

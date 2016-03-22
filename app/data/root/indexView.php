@@ -40,9 +40,9 @@ function printNav(){
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Información<span class="caret"></span></a>
                                 <ul class="dropdown-menu"> 
                                     <li><a href="http://localhost/academicophp/root/institucion/">Institución</a></li>
-                                    <li><a href="http://localhost/academicophp/root/ciclo/">Ciclo</a></li>
-                                    <li><a href="http://localhost/academicophp/root/nivel/">Nivel</a></li>
-                                    <li><a href="http://localhost/academicophp/root/paralelo/">Paralelo</a></li>
+                                    <li><a href="http://localhost/academicophp/root/institucion/ciclo/">Ciclo</a></li>
+                                    <li><a href="http://localhost/academicophp/root/institucion/nivel/">Nivel</a></li>
+                                    <li><a href="http://localhost/academicophp/root/institucion/paralelo/">Paralelo</a></li>
                                 </ul>
                             </li>
                         </ul>
