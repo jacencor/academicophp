@@ -18,6 +18,7 @@ function printHead($dir){
                 <title>academic</title>
                 <link href="'.$dir.'css/bootstrap.min.css" rel="stylesheet">
                 <link href="'.$dir.'css/theme.css" rel="stylesheet">
+                <link href="'.$dir.'css/singin.css" rel="stylesheet">
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
                 <script src="'.$dir.'js/bootstrap.min.js"></script>
             </head>';
@@ -43,6 +44,12 @@ function printNav(){
                                     <li><a href="http://localhost/academicophp/root/institucion/ciclo/">Ciclo</a></li>
                                     <li><a href="http://localhost/academicophp/root/institucion/nivel/">Nivel</a></li>
                                     <li><a href="http://localhost/academicophp/root/institucion/paralelo/">Paralelo</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Registro<span class="caret"></span></a>
+                                <ul class="dropdown-menu"> 
+                                    <li><a href="http://localhost/academicophp/root/registro/">Usuarios</a></li>
                                 </ul>
                             </li>
                         </ul>

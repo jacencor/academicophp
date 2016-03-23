@@ -4,13 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/academicophp/app/connection/userPdo.php</file>
-            <file>file:/C:/xampp/htdocs/academicophp/app/class/institution.php</file>
-            <file>file:/C:/xampp/htdocs/academicophp/app/connection/levelPdo.php</file>
-            <file>file:/C:/xampp/htdocs/academicophp/app/connection/institutionPdo.php</file>
-            <file>file:/C:/xampp/htdocs/academicophp/app/class/user.php</file>
-            <file>file:/C:/xampp/htdocs/academicophp/app/class/level.php</file>
-            <file>file:/C:/xampp/htdocs/academicophp/app/class/stage.php</file>
-            <file>file:/C:/xampp/htdocs/academicophp/app/class/groupLevel.php</file>
+            <file>file:/C:/xampp/htdocs/academicophp/app/data/user/loadInfo.php</file>
+            <file>file:/C:/xampp/htdocs/academicophp/app/connection/connection.php</file>
+            <file>file:/C:/xampp/htdocs/academicophp/app/data/user/singIn.php</file>
+            <file>file:/C:/xampp/htdocs/academicophp/root/index.php</file>
+            <file>file:/C:/xampp/htdocs/academicophp/root/registro/index.php</file>
+            <file>file:/C:/xampp/htdocs/academicophp/root/login.php</file>
         </group>
     </open-files>
 </project-private>

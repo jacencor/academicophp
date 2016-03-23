@@ -19,6 +19,7 @@ class user   {
     function __construct($array) {
         $this->id=$array['id'];
         $this->user_name=$array['user_name'];
+        $this->email=$array['email'];
         $this->names=$array['names'];
         $this->last_names=$array['last_names'];
         $this->state=$array['state'];
@@ -37,10 +38,6 @@ class user   {
         return $this->names;
     }
 
-    function getLast_names() {
-        return $this->lastNames;
-    }
-
     function getEmail() {
         return $this->email;
     }
@@ -56,6 +53,13 @@ class user   {
     function getUpdated_at() {
         return $this->updated_at;
     }
+    function getLast_names() {
+        return $this->last_names;
+    }
+
+    function setLast_names($last_names) {
+        $this->last_names = $last_names;
+    }
 
     function setId($id) {
         $this->id = $id;
@@ -67,10 +71,6 @@ class user   {
 
     function setNames($names) {
         $this->names = $names;
-    }
-
-    function setLastNames($lastNames) {
-        $this->lastNames = $lastNames;
     }
 
     function setEmail($email) {

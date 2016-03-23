@@ -58,28 +58,46 @@ function countUsersActive(){
 }
 
 function addUser($input){
-    if (!preg_match("/^[0-9]{10,}+$/",$input['user_name'])){
+    if (!preg_match("/^[0-9]{10,13}+$/",$input['user_name'])){
         return false;
     }
     if (!(filter_var($input['email'], FILTER_VALIDATE_EMAIL))){
         return false;
     }
-    if (!preg_match("/^[a-zA-Z0-9\s]{3,}+$/",$input['names'])){
+    if (!preg_match("/^[a-zA-Z\s]{2,64}+$/",$input['names'])){
         return false;
     }
-    if (!preg_match("/^[a-zA-Z0-9\s]{3,}+$/",$input['last_names'])){
+    if (!preg_match("/^[a-zA-Z\s]{2,64}+$/",$input['last_names'])){
         return false;
     }
+    if (!preg_match("/^[a-zA-Z]\w{4,16}$/",$input['password'])){
+        return false;
+    }
+    $input['state']="ACTIVO";
+    $input['created_at']=date("Y-m-d H:i:s");
+    $input['updated_at']=date("Y-m-d H:i:s");
     $input['user_name']=trim($input['user_name']);
     $input['email']=strtolower(trim($input['email']));
     $input['names']=strtoupper(preg_replace('/\s+/', ' ', trim($input['names'])));
     $input['last_names']=strtoupper(preg_replace('/\s+/', ' ', trim($input['last_names'])));
-    $input['state']="ACTIVO";
-    $input['created_at']=date("Y-m-d H:i:s");
-    $input['updated_at']=date("Y-m-d H:i:s");
+    $input['password']=password_hash($input['password'], PASSWORD_DEFAULT, ['cost'=>12]);
     $sql = 'INSERT 
-                INTO user (user_name, email, state, created_at, updated_at, names, last_names)
-                VALUES (:user_name, :email, :state, :created_at, :updated_at, :names, :last_names)';
+            INTO users (user_name
+                ,email
+                ,state
+                ,created_at
+                ,updated_at
+                ,names
+                ,last_names
+                ,password)
+            VALUES (:user_name
+                ,:email
+                ,:state
+                ,:created_at
+                ,:updated_at
+                ,:names
+                ,:last_names
+                ,:password)';
     $connection = new connectionDb;
     $output = $connection->executeSQL($sql,$input);
     if($output['flag']){
@@ -89,7 +107,7 @@ function addUser($input){
     }
 }
 
-function deleteInstitution($id){
+function deleteUser($id){
     if (!preg_match("/^[0-9]+$/",$id['id'])){
         return false;
     }
@@ -118,7 +136,7 @@ function findUser($id){
                 ,created_at AS created_at
                 ,updated_at AS updated_at
             FROM users
-            WHERE id in (:id)
+            WHERE id IN (:id)
             AND state = 'ACTIVO'
             ORDER BY user_name";
     $connection = new connectionDb;
@@ -130,14 +148,33 @@ function findUser($id){
     }
 }
 
+function inactiveUser($id){
+    if (!preg_match("/^[0-9]+$/",$id['id'])){
+        return false;
+    }
+    $id['state']='INACTIVO';
+    $id['updated_at']=date("Y-m-d H:i:s");
+    $sql = 'UPDATE users
+            SET state=:state
+                ,updated_at=:updated_at
+            WHERE id IN (:id)';
+    $connection = new connectionDb;
+    $output = $connection->executeSQL($sql,$id);
+    if($output['flag']){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 function updateUser($input){
     if (!(filter_var($input['email'], FILTER_VALIDATE_EMAIL))){
         return false;
     }
-    if (!preg_match("/^[a-zA-Z0-9\s]{3,}+$/",$input['names'])){
+    if (!preg_match("/^[a-zA-Z0-9\s]{2,64}+$/",$input['names'])){
         return false;
     }
-    if (!preg_match("/^[a-zA-Z0-9\s]{3,}+$/",$input['last_names'])){
+    if (!preg_match("/^[a-zA-Z0-9\s]{2,64}+$/",$input['last_names'])){
         return false;
     }
     $input['names']=strtoupper(preg_replace('/\s+/', ' ', trim($input['names'])));
@@ -145,8 +182,11 @@ function updateUser($input){
     $input['email']=trim($input['email']);
     $input['updated_at']=date("Y-m-d H:i:s");
     $sql = 'UPDATE users
-                SET names=:names, last_names=:last_names email=:email, updated_at=:updated_at
-                WHERE id IN (:id)';
+            SET names=:names
+                ,last_names=:last_names
+                ,email=:email
+                ,updated_at=:updated_at
+            WHERE id IN (:id)';
     $connection = new connectionDb;
     $output = $connection->executeSQL($sql,$input);
     if($output['flag']){
@@ -156,20 +196,28 @@ function updateUser($input){
     }
 }
 
-function inactiveUser($id){
-    if (!preg_match("/^[0-9]+$/",$id['id'])){
+function singIn($input){
+    if (!preg_match("/^[0-9]{10,13}+$/",$input['user_name'])){
         return false;
     }
-    $id['state']='INACTIVO';
-    $id['updated_at']=date("Y-m-d H:i:s");
-    $sql = 'UPDATE user
-                SET state=:state, updated_at=:updated_at
-                WHERE id IN (:id)';
+    if (!preg_match("/^[a-zA-Z]\w{4,16}$/",$input['password'])){
+        return false;
+    }
+    $user['user_name']=$input['user_name'];
+    $sql = 'SELECT password AS password
+                ,id AS id
+            FROM users
+            WHERE user_name IN (:user_name)';
     $connection = new connectionDb;
-    $output = $connection->executeSQL($sql,$id);
-    if($output['flag']){
-        return true;
-    }else{
-        return false;
+    $output = $connection->executeSelect($sql,$user);
+    if (count($output['output'])>0){
+        if (password_verify($input['password'], $output['output']['password'])){
+            session_start();
+            $_SESSION['user_id']= $output['output']['id'];
+            $_SESSION['start']= true;
+            error_log($_SESSION['user_id'], 0);
+            return true;
+        }
     }
+    return false;
 }
